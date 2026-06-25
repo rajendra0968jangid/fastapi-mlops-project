@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLOps Real Estate Predictor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>🏡 House Price Predictor</h2>
+        <div class="form-group">
+            <label>Average Area Income ($)</label>
+            <input type="number" id="income" value="70000">
+        </div>
+        <div class="form-group">
+            <label>House Age (Years)</label>
+            <input type="number" id="age" value="6" step="0.1">
+        </div>
+        <div class="form-group">
+            <label>Number of Rooms</label>
+            <input type="number" id="rooms" value="5">
+        </div>
+        <button onclick="getPrediction()">Predict Pricing Evaluation</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function getPrediction() {
+            const resultDiv = document.getElementById('result');
+            const payload = {
+                avg_income: document.getElementById('income').value,
+                house_age: document.getElementById('age').value,
+                num_rooms: document.getElementById('rooms').value
+            };
+
+            try {
+                // "backend" maps directly to the container service network name inside Docker
+                const response = await fetch('http://localhost:5000/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload) // JavaScript maps straight to Pydantic attributes
+                });
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    resultDiv.className = "success";
+                    resultDiv.style.display = "block";
+                    resultDiv.innerHTML = `<strong>Estimated Price:</strong> $${data.estimated_price.toLocaleString()}`;
+                } else {
+                    alert("Error: " + data.message);
+                }
+            } catch (error) {
+                alert("Failed connecting to Flask API backend service.");
+            }
+        }
+    </script>
+</body>
+
+</html>

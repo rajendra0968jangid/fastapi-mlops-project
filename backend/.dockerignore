@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+venv/
+.env
+
+.git
+.gitignore
+
+Dockerfile
+docker-compose.yml
+
+*.joblib
