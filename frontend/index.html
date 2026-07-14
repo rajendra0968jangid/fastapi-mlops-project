@@ -85,20 +85,20 @@
 <body>
 
     <div class="card">
-        <h2>🏡 House Price Predictor</h2>
+        <h2>🏡 Marks Predictor</h2>
         <div class="form-group">
-            <label>Average Area Income ($)</label>
-            <input type="number" id="income" value="70000">
+            <label>Number in Maths</label>
+            <input type="number" id="maths" value="70">
         </div>
         <div class="form-group">
-            <label>House Age (Years)</label>
-            <input type="number" id="age" value="6" step="0.1">
+            <label>Number in  English</label>
+            <input type="number" id="english" value="60" >
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label>Number of Rooms</label>
             <input type="number" id="rooms" value="5">
-        </div>
-        <button onclick="getPrediction()">Predict Pricing Evaluation</button>
+        </div> -->
+        <button onclick="getPrediction()">Predict marks Evaluation</button>
 
         <div id="result"></div>
     </div>
@@ -107,14 +107,14 @@
         async function getPrediction() {
             const resultDiv = document.getElementById('result');
             const payload = {
-                avg_income: document.getElementById('income').value,
-                house_age: document.getElementById('age').value,
-                num_rooms: document.getElementById('rooms').value
+                maths: document.getElementById('maths').value,
+                english: document.getElementById('english').value,
+                // num_rooms: document.getElementById('rooms').value
             };
 
             try {
                 // "backend" maps directly to the container service network name inside Docker
-                const response = await fetch('http://localhost:5000/predict', {
+                const response = await fetch('http://127.0.0.1:5000/predict', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload) // JavaScript maps straight to Pydantic attributes
@@ -124,7 +124,7 @@
                 if (data.status === 'success') {
                     resultDiv.className = "success";
                     resultDiv.style.display = "block";
-                    resultDiv.innerHTML = `<strong>Estimated Price:</strong> $${data.estimated_price.toLocaleString()}`;
+                    resultDiv.innerHTML = `<strong>Estimated marks in physics:</strong> ${data?.prediction?.prediction.toLocaleString()}`;
                 } else {
                     alert("Error: " + data.message);
                 }
