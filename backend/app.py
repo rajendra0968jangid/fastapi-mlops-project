@@ -46,7 +46,7 @@ class Student(BaseModel):
     english: float
 
 
-@app.post("/api/predict")
+@app.post("/predict")
 def predict(student: Student):
 
     payload = student.model_dump()
