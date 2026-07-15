@@ -21,14 +21,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MODEL_PATH = 'model (1).joblib' # model name
+# MODEL_PATH = 'model (1).joblib' # model name
 
-# Automatically train the model on startup if it doesn't exist yet
-if not os.path.exists(MODEL_PATH):
-    print("Model file not found. Triggering baseline training pipeline...")
-    generate_and_train()
+# # Automatically train the model on startup if it doesn't exist yet
+# if not os.path.exists(MODEL_PATH):
+#     print("Model file not found. Triggering baseline training pipeline...")
+#     generate_and_train()
 
-model = joblib.load(MODEL_PATH)
+# model = joblib.load(MODEL_PATH)
 
 
 # ==========================
@@ -104,4 +104,4 @@ def predict(student: Student):
 if __name__ == '__main__':
     import uvicorn
     # Run using uvicorn server instead of native flask development server
-    uvicorn.run(app, host='0.0.0.0', port=5000,reload=True)
+    uvicorn.run(app, host='0.0.0.0', port=5000)
