@@ -35,7 +35,7 @@ app.add_middleware(
 # API Gateway URL
 # ==========================
 
-API_GATEWAY_URL = "https://whxkldf9bi.execute-api.us-east-1.amazonaws.com/predict"
+API_GATEWAY_URL = "https://a34n5jhwbh.execute-api.us-east-1.amazonaws.com/predict"
 
 # ==========================
 # Request Model
